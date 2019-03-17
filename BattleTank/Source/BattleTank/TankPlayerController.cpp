@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
 #include "Public/DrawDebugHelpers.h"
+#include "Public/TankAimingComponent.h"
 
 
 void ATankPlayerController::BeginPlay()
@@ -44,7 +45,9 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		//GetControlledTank()->AimAt(HitLocation);
+		//GetControlledTank()->TankAim->AimAt(HitLocation);
+		GetControlledTank()->FindComponentByClass<UTankAimingComponent>()->AimAt(HitLocation);
 
 	}
 

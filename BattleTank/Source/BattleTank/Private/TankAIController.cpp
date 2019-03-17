@@ -3,6 +3,7 @@
 #include "TankAIController.h"
 #include "Engine/World.h"
 #include "TankPlayerController.h"
+#include "Public/TankAimingComponent.h"
 
 void ATankAIController::BeginPlay()
 {
@@ -46,5 +47,5 @@ void ATankAIController::AimTowardsPlayer()
 {
 	if (!GetControlledTank()) return;
 
-	GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+	GetControlledTank()->TankAim->AimAt(GetPlayerTank()->GetActorLocation());
 }
