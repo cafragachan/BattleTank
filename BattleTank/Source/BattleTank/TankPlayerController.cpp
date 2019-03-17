@@ -1,28 +1,92 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "CollisionQueryParams.h"
+#include "Engine/World.h"
+#include "Camera/CameraComponent.h"
+#include "Public/DrawDebugHelpers.h"
 
 
 void ATankPlayerController::BeginPlay()
 {
+	Super::BeginPlay();
 
-	PossesedTank = Cast<ATank>(GetPawn());
+	auto ControlledTank = GetControlledTank();
 
-	if (PossesedTank)
+	if (ControlledTank)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s: controlled pawn"), *PossesedTank->GetName());
-
+		UE_LOG(LogTemp, Warning, TEXT("%s: controlled pawn"), *ControlledTank->GetName());
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NO controlled pawn"), *GetPawn()->GetName());
-
+		UE_LOG(LogTemp, Warning, TEXT("NO controlled pawn"));
 	}
+}
+
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	AimTowardsCrosshair();
 }
 
 ATank* ATankPlayerController::GetControlledTank() const
 {
 
 	return Cast<ATank>(GetPawn());
+}
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+	if (!GetControlledTank()) return;
+
+	FVector HitLocation;
+
+	if (GetSightRayHitLocation(HitLocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+
+	}
+
+}
+
+bool ATankPlayerController::GetSightRayHitLocation(FVector& HitPos_) const
+{
+	int32 ViewportX, ViewportY;
+	GetViewportSize(ViewportX, ViewportY);
+
+	FVector2D ScreenLocation = FVector2D(ViewportX * CrosshairX, ViewportY * CrosshairY);
+
+	FHitResult Hit;
+	FVector WorldPos, Direction, EndPos;
+
+	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldPos, Direction)) 
+	{
+		FVector CameraPos = PlayerCameraManager->GetCameraLocation();
+		EndPos = CameraPos + Direction * LineTraceRange;
+
+		FCollisionQueryParams Param = FCollisionQueryParams(FName(NAME_None), false, GetControlledTank());
+
+		//GetWorld()->LineTraceSingleByObjectType(Hit, GetControlledTank()->GetActorLocation(), EndPos, ECollisionChannel::ECC_PhysicsBody, Param);
+		GetWorld()->LineTraceSingleByChannel(
+			Hit, 
+			CameraPos,
+			EndPos, 
+			ECollisionChannel::ECC_Visibility,
+			Param
+			
+		);
+
+		DrawDebugLine(GetWorld(), CameraPos, EndPos, FColor(255, 0, 0), false, 0, 10);
+	}
+		
+
+	if (Hit.GetActor()) 
+	{
+		HitPos_ = Hit.Location;
+		return true;
+	}
+
+	else { return false; }
 }
 
