@@ -4,6 +4,8 @@
 #include "Engine/World.h"
 #include "TankPlayerController.h"
 #include "Public/TankAimingComponent.h"
+#include "Public/Tank.h"
+
 
 void ATankAIController::BeginPlay()
 {

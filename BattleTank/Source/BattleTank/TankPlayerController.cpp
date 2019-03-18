@@ -1,11 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
+
 #include "TankPlayerController.h"
 #include "CollisionQueryParams.h"
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
 #include "Public/DrawDebugHelpers.h"
 #include "Public/TankAimingComponent.h"
+#include "Public/Tank.h"
 
 
 void ATankPlayerController::BeginPlay()
@@ -77,7 +80,6 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitPos_) const
 			
 		);
 
-		DrawDebugLine(GetWorld(), CameraPos, EndPos, FColor(255, 0, 0), false, 0, 10);
 	}
 		
 
