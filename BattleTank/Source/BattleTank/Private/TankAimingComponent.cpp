@@ -6,6 +6,7 @@
 #include "TankBarrel.h"
 
 
+
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -79,7 +80,8 @@ void UTankAimingComponent::SetBarrelComponent(UTankBarrel * Barrel_)
 void UTankAimingComponent::MoveBarrel(FRotator Direction)
 {
 	if (!Barrel) return;
+	auto DeltaRotation = Direction - Barrel->GetForwardVector().Rotation();
 
-	//Barrel->Elevate
+	Barrel->Elevate(DeltaRotation.Pitch);
 }
 
