@@ -8,6 +8,7 @@
 
 //forward declaration
 class UTankBarrel;
+class UTankTurret;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
@@ -18,19 +19,22 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AimAt(FVector Target_, float LaunchSpeed_);
 
 	void SetBarrelComponent(UTankBarrel* Barrel_);
+
+	void SetTurretComponent(UTankTurret* Turret_);
+
 	
 private:
+
+	UTankTurret* Turret = nullptr;
 
 	UTankBarrel* Barrel = nullptr;
 

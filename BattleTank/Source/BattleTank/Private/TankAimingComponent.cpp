@@ -4,6 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 
 
 
@@ -24,7 +25,6 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
@@ -58,18 +58,14 @@ void UTankAimingComponent::AimAt(FVector Target_, float LaunchSpeed_)
 	{
 		auto AimDirection = OutVel.GetSafeNormal().Rotation();
 
-		UE_LOG(LogTemp, Warning, TEXT("aim direction: %s"), *AimDirection.ToString());
-
-
+		//UE_LOG(LogTemp, Warning, TEXT("aim direction: %s"), *AimDirection.ToString());
 
 		MoveBarrel(AimDirection);
 	}
 	else 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No Aim Direction"));
-
+		//UE_LOG(LogTemp, Warning, TEXT("No Aim Direction"));
 	}
-
 }
 
 void UTankAimingComponent::SetBarrelComponent(UTankBarrel * Barrel_)
@@ -77,11 +73,19 @@ void UTankAimingComponent::SetBarrelComponent(UTankBarrel * Barrel_)
 	Barrel = Barrel_;
 }
 
+void UTankAimingComponent::SetTurretComponent(UTankTurret * Turret_)
+{
+	Turret = Turret_;
+}
+
 void UTankAimingComponent::MoveBarrel(FRotator Direction)
 {
-	if (!Barrel) return;
-	auto DeltaRotation = Direction - Barrel->GetForwardVector().Rotation();
+	if (!Barrel || !Turret) return;
+	auto DeltaElevation = Direction - Barrel->GetForwardVector().Rotation();
+	auto DeltaTurretRotation = Direction - Turret->GetForwardVector().Rotation();
 
-	Barrel->Elevate(DeltaRotation.Pitch);
+	Barrel->Elevate(DeltaElevation.Pitch);
+	Turret->Rotate(DeltaTurretRotation.Yaw);
+
 }
 
