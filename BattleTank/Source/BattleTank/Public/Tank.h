@@ -10,6 +10,7 @@ class UTankAimingComponent;
 class UTankBarrel;
 class UTankTurret;
 class AProjectile;
+class UTankMovementComponent;
 
 UCLASS(Blueprintable)
 class BATTLETANK_API ATank : public APawn
@@ -29,6 +30,8 @@ public:
 
 	UTankAimingComponent* TankAim = nullptr;
 
+	//UTankMovementComponent* TankMovement = nullptr;
+
 	void AimAt(FVector HitLocation_);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
@@ -37,13 +40,26 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* Barrel_, UTankTurret* Turret_);
 
-	UPROPERTY(EditAnywhere, Category = "Firing")
+	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 4000;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeSeconds = 3;
+
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBP = nullptr;//UClass* ProjectileBP = nullptr;    ------------ alternative
 
+protected:
+
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent* TankMovement = nullptr;
+
 private:
 
 	UTankBarrel* Barrel = nullptr;
+
+
+	double LastFireTime = 0;
+
 };
