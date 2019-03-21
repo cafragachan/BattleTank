@@ -28,10 +28,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UTankAimingComponent* TankAim = nullptr;
-
-	//UTankMovementComponent* TankMovement = nullptr;
-
 	void AimAt(FVector HitLocation_);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
@@ -54,6 +50,10 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	UTankMovementComponent* TankMovement = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)
+	UTankAimingComponent* TankAim = nullptr;
+
 
 private:
 

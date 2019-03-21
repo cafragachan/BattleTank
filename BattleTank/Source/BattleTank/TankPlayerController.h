@@ -27,14 +27,16 @@ private:
 
 public:
 
+	float LineTraceRange = 1000000;
+
+
 	UPROPERTY(EditAnywhere)
 		float CrosshairX = 0.5f;
 
 	UPROPERTY(EditAnywhere)
 		float CrosshairY = 0.3333f;
 
-	float LineTraceRange = 1000000;
-
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank* GetControlledTank() const;
 	
 	void AimTowardsCrosshair();
