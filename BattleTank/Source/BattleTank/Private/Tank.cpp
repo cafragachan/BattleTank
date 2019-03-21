@@ -19,6 +19,8 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+
+	TankAim = FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called to bind functionality to input
