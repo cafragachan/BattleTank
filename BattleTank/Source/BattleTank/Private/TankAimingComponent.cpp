@@ -38,7 +38,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::AimAt(FVector Target_, float LaunchSpeed_)
 {
-	if (!Barrel) return;
+	if (!ensure(Barrel)) return;
 
 	FVector OutVel;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("ProjectileStartPosition"));
@@ -72,7 +72,7 @@ void UTankAimingComponent::InitialiseAim(UTankTurret * Turret_, UTankBarrel * Ba
 
 void UTankAimingComponent::MoveBarrel(FRotator Direction)
 {
-	if (!Barrel || !Turret) return;
+	if (!ensure(Barrel && Turret)) return;
 	auto DeltaElevation = Direction - Barrel->GetForwardVector().Rotation();
 	auto DeltaTurretRotation = Direction - Turret->GetForwardVector().Rotation();
 

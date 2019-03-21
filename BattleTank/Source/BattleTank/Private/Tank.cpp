@@ -5,7 +5,6 @@
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "Projectile.h"
-#include "TankMovementComponent.h"
 #include "Engine.h"
 
 // Sets default values
@@ -31,7 +30,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector HitLocation_)
 {
-	if (!TankAim) return;
+	if (!ensure(TankAim)) return;
 	TankAim->AimAt(HitLocation_, LaunchSpeed);
 
 }
@@ -39,7 +38,7 @@ void ATank::AimAt(FVector HitLocation_)
 void ATank::Fire()
 {	
 	bool isReloaded = (GetWorld()->TimeSeconds - LastFireTime) > ReloadTimeSeconds;
-	if (!TankAim) return;
+	if (!ensure(TankAim)) return;
 
 	if (TankAim->Barrel && isReloaded)
 	{
