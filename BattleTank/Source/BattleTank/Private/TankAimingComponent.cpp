@@ -58,23 +58,15 @@ void UTankAimingComponent::AimAt(FVector Target_, float LaunchSpeed_)
 	{
 		auto AimDirection = OutVel.GetSafeNormal().Rotation();
 
-		//UE_LOG(LogTemp, Warning, TEXT("aim direction: %s"), *AimDirection.ToString());
-
 		MoveBarrel(AimDirection);
 	}
-	else 
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("No Aim Direction"));
-	}
+
 }
 
-void UTankAimingComponent::SetBarrelComponent(UTankBarrel * Barrel_)
+
+void UTankAimingComponent::InitialiseAim(UTankTurret * Turret_, UTankBarrel * Barrel_)
 {
 	Barrel = Barrel_;
-}
-
-void UTankAimingComponent::SetTurretComponent(UTankTurret * Turret_)
-{
 	Turret = Turret_;
 }
 

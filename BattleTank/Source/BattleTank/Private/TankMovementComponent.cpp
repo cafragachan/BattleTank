@@ -29,7 +29,7 @@ void UTankMovementComponent::IntendMoveLeft(float Speed_)
 	RightTrack->SetThrottle(Speed_);
 }
 
-void UTankMovementComponent::Initialise(UTankTrack * RightTrack_, UTankTrack * LeftTrack_)
+void UTankMovementComponent::InitialiseMovement(UTankTrack * RightTrack_, UTankTrack * LeftTrack_)
 {
 	RightTrack = RightTrack_;
 	LeftTrack = LeftTrack_;

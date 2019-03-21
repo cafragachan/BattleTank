@@ -15,16 +15,8 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto ControlledTank = GetControlledTank();
-
-	if (ControlledTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s: controlled pawn"), *ControlledTank->GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NO controlled pawn"));
-	}
+	auto AimingComp = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if(AimingComp) FoundAimingComponent(AimingComp);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -39,6 +31,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 	return Cast<ATank>(GetPawn());
 }
+
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
