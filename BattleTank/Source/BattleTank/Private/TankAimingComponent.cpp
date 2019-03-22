@@ -5,7 +5,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
-
+#include "Projectile.h"
+#include "Engine.h"
 
 
 // Sets default values for this component's properties
@@ -41,11 +42,8 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::AimAt(FVector Target_)
 {
-	if (!ensure(Barrel)) 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("DONKEY: not barrel"));
-		return; 
-	}
+	if (!ensure(Barrel)) return; 
+	
 
 	FVector OutVel;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("ProjectileStartPosition"));
@@ -86,5 +84,23 @@ void UTankAimingComponent::MoveBarrel(FRotator Direction)
 	Barrel->Elevate(DeltaElevation.Pitch);
 	Turret->Rotate(DeltaTurretRotation.Yaw);
 
+}
+
+void UTankAimingComponent::Fire()
+{
+	bool isReloaded = (GetWorld()->TimeSeconds - LastFireTime) > ReloadTimeSeconds;
+	if (!ensure(Barrel && ProjectileBP)) return;
+
+	if (Barrel && isReloaded)
+	{
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>
+			(ProjectileBP,
+				Barrel->GetSocketLocation(FName("ProjectileStartPosition")),
+				Barrel->GetSocketRotation(FName("ProjectileStartPosition"))
+				);
+
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = GetWorld()->TimeSeconds;
+	}
 }
 

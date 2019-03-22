@@ -6,7 +6,6 @@
 #include "CollisionQueryParams.h"
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
-#include "Public/DrawDebugHelpers.h"
 #include "Public/TankAimingComponent.h"
 
 
