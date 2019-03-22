@@ -9,7 +9,8 @@
 /**
  * 
  */
-class ATank;
+
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
@@ -23,5 +24,6 @@ private:
 
 	float RadarRadius = 3000;
 
+	UTankAimingComponent* AimingComp = nullptr;
 	
 };

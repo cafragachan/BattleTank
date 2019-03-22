@@ -25,6 +25,9 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+
+	Barrel = GetOwner()->FindComponentByClass<UTankBarrel>();
+	Turret = GetOwner()->FindComponentByClass<UTankTurret>();
 }
 
 
@@ -36,9 +39,13 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	
 }
 
-void UTankAimingComponent::AimAt(FVector Target_, float LaunchSpeed_)
+void UTankAimingComponent::AimAt(FVector Target_)
 {
-	if (!ensure(Barrel)) return;
+	if (!ensure(Barrel)) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DONKEY: not barrel"));
+		return; 
+	}
 
 	FVector OutVel;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("ProjectileStartPosition"));
@@ -48,7 +55,7 @@ void UTankAimingComponent::AimAt(FVector Target_, float LaunchSpeed_)
 				this, OutVel, 
 				StartLocation, 
 				Target_, 
-				LaunchSpeed_,
+				LaunchSpeed,
 				false,
 				0,
 				0,

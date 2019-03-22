@@ -33,10 +33,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(FVector Target_, float LaunchSpeed_);
+	void AimAt(FVector Target_);
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void InitialiseAim(UTankTurret* Turret_, UTankBarrel* Barrel_);
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float LaunchSpeed = 4000;
 
 	UTankTurret* Turret = nullptr;
 
@@ -46,6 +49,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Locked;
+
+	
 
 private:
 

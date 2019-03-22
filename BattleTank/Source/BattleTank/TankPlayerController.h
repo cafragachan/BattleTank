@@ -11,7 +11,6 @@
  * 
  */
 
-class ATank;
 class UTankAimingComponent;
 
 UCLASS()
@@ -25,6 +24,8 @@ private:
 
 		virtual void Tick(float DeltaTime) override;
 
+		UTankAimingComponent* AimingComp = nullptr;
+
 public:
 
 	float LineTraceRange = 1000000;
@@ -36,8 +37,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		float CrosshairY = 0.3333f;
 
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank* GetControlledTank() const;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimCompRef);

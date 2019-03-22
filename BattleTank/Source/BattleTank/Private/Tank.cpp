@@ -19,8 +19,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-
-	TankAim = FindComponentByClass<UTankAimingComponent>();
+	Barrel = FindComponentByClass<UTankBarrel>();
 }
 
 // Called to bind functionality to input
@@ -30,24 +29,17 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::AimAt(FVector HitLocation_)
-{
-	if (!ensure(TankAim)) return;
-	TankAim->AimAt(HitLocation_, LaunchSpeed);
-
-}
-
 void ATank::Fire()
 {	
 	bool isReloaded = (GetWorld()->TimeSeconds - LastFireTime) > ReloadTimeSeconds;
-	if (!ensure(TankAim)) return;
+	if (!ensure(Barrel)) return;
 
-	if (TankAim->Barrel && isReloaded)
+	if (Barrel && isReloaded)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>
 			(ProjectileBP,
-			TankAim->Barrel->GetSocketLocation(FName("ProjectileStartPosition")),
-			TankAim->Barrel->GetSocketRotation(FName("ProjectileStartPosition"))
+			Barrel->GetSocketLocation(FName("ProjectileStartPosition")),
+			Barrel->GetSocketRotation(FName("ProjectileStartPosition"))
 			);
 
 		Projectile->LaunchProjectile(LaunchSpeed);
