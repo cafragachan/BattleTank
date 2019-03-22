@@ -22,7 +22,8 @@ private:
 	void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 
-	float RadarRadius = 3000;
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	float RadarRadius = 10000;
 
 	UTankAimingComponent* AimingComp = nullptr;
 	

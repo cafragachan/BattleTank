@@ -44,7 +44,6 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 void UTankAimingComponent::AimAt(FVector Target_)
 {
 	if (!ensure(Barrel)) return; 
-	
 
 	FVector OutVel;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("ProjectileStartPosition"));
@@ -76,6 +75,11 @@ void UTankAimingComponent::InitialiseAim(UTankTurret * Turret_, UTankBarrel * Ba
 	Turret = Turret_;
 }
 
+EFiringState UTankAimingComponent::GetFiringState() const
+{
+	return FiringState;
+}
+
 void UTankAimingComponent::MoveBarrel(FRotator Direction)
 {
 	if (!ensure(Barrel && Turret)) return;
@@ -83,7 +87,9 @@ void UTankAimingComponent::MoveBarrel(FRotator Direction)
 	auto DeltaTurretRotation = Direction - Turret->GetForwardVector().Rotation();
 
 	Barrel->Elevate(DeltaElevation.Pitch);
-	Turret->Rotate(DeltaTurretRotation.Yaw);
+
+	if(FMath::Abs(DeltaTurretRotation.Yaw) <= 180) Turret->Rotate(DeltaTurretRotation.Yaw);
+	else if (FMath::Abs(DeltaTurretRotation.Yaw) > 180) Turret->Rotate(-DeltaTurretRotation.Yaw);
 
 }
 

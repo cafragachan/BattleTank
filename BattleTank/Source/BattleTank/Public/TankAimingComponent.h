@@ -54,6 +54,8 @@ public:
 	UTankTurret* Turret = nullptr;
 	UTankBarrel* Barrel = nullptr;
 
+	EFiringState GetFiringState() const;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
