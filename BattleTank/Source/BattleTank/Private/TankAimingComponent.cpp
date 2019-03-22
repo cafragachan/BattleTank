@@ -16,7 +16,6 @@ UTankAimingComponent::UTankAimingComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
 }
 
 
@@ -25,7 +24,7 @@ void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	LastFireTime = GetWorld()->TimeSeconds;
 
 	Barrel = GetOwner()->FindComponentByClass<UTankBarrel>();
 	Turret = GetOwner()->FindComponentByClass<UTankTurret>();
@@ -37,7 +36,9 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	
+	if ((GetWorld()->TimeSeconds - LastFireTime) < ReloadTimeSeconds) { FiringState = EFiringState::Reloading; }
+	else if(IsBarrelMoving()){ FiringState = EFiringState::Aiming; }
+	else { FiringState = EFiringState::Locked; }
 }
 
 void UTankAimingComponent::AimAt(FVector Target_)
@@ -61,9 +62,9 @@ void UTankAimingComponent::AimAt(FVector Target_)
 			)
 		)
 	{
-		auto AimDirection = OutVel.GetSafeNormal().Rotation();
+		AimDirection = OutVel.GetSafeNormal();
 
-		MoveBarrel(AimDirection);
+		MoveBarrel(AimDirection.Rotation());
 	}
 
 }
@@ -86,12 +87,27 @@ void UTankAimingComponent::MoveBarrel(FRotator Direction)
 
 }
 
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return true; }
+
+	bool isMoving = true;
+
+	if (Barrel->GetForwardVector().Equals(AimDirection, 0.01f)) { isMoving = false; }
+	else 
+	{ 
+		UE_LOG(LogTemp, Warning, TEXT("is Moving"))
+		isMoving = true;
+	}
+
+	return isMoving;
+}
+
 void UTankAimingComponent::Fire()
 {
-	bool isReloaded = (GetWorld()->TimeSeconds - LastFireTime) > ReloadTimeSeconds;
 	if (!ensure(Barrel && ProjectileBP)) return;
 
-	if (Barrel && isReloaded)
+	if (FiringState != EFiringState::Reloading)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>
 			(ProjectileBP,

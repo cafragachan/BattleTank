@@ -57,11 +57,16 @@ public:
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringState FiringState = EFiringState::Locked;
+	EFiringState FiringState = EFiringState::Aiming;
 
 	
 private:
 
 	void MoveBarrel(FRotator Direction);
+
+	bool IsBarrelMoving();
+
 	double LastFireTime = 0;
+
+	FVector AimDirection;
 };
