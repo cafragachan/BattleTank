@@ -8,6 +8,7 @@
 
 
 class UProjectileMovementComponent;
+class UParticleSystemComponent;
 
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
@@ -21,6 +22,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* CollisionMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent* LaunchBlast;
 
 public:	
 	// Called every frame

@@ -62,7 +62,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Aiming;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Setup")
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	int32 Ammo = 3;
 
 	
