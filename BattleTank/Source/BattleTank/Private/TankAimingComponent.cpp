@@ -94,11 +94,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 	bool isMoving = true;
 
 	if (Barrel->GetForwardVector().Equals(AimDirection, 0.01f)) { isMoving = false; }
-	else 
-	{ 
-		UE_LOG(LogTemp, Warning, TEXT("is Moving"))
-		isMoving = true;
-	}
+	else { 	isMoving = true; }
 
 	return isMoving;
 }
