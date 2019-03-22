@@ -36,7 +36,8 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if ((GetWorld()->TimeSeconds - LastFireTime) < ReloadTimeSeconds) { FiringState = EFiringState::Reloading; }
+	if(Ammo == 0) { FiringState = EFiringState::Empty; }
+	else if ((GetWorld()->TimeSeconds - LastFireTime) < ReloadTimeSeconds) { FiringState = EFiringState::Reloading; }
 	else if(IsBarrelMoving()){ FiringState = EFiringState::Aiming; }
 	else { FiringState = EFiringState::Locked; }
 }
@@ -109,7 +110,7 @@ void UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel && ProjectileBP)) return;
 
-	if (FiringState != EFiringState::Reloading)
+	if (FiringState != EFiringState::Reloading && Ammo > 0)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>
 			(ProjectileBP,
@@ -119,6 +120,7 @@ void UTankAimingComponent::Fire()
 
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = GetWorld()->TimeSeconds;
+		Ammo--;
 	}
 }
 

@@ -11,7 +11,8 @@ enum class EFiringState : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	Empty
 };
 
 //forward declaration
@@ -43,7 +44,7 @@ public:
 	void Fire();
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 4000;
+	float LaunchSpeed = 8000;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeSeconds = 3;
@@ -60,6 +61,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Aiming;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
+	int32 Ammo = 3;
 
 	
 private:

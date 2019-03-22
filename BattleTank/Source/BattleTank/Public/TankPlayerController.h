@@ -40,6 +40,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
+
 	
 	void AimTowardsCrosshair();
 
