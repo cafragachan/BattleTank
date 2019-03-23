@@ -38,6 +38,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	float DestroyDelay = 2.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ProjectileDamage = 20.f;
 	
 public:	
 	// Called every frame

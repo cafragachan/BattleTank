@@ -13,13 +13,13 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
-	ATank();
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	//returns currentHealth between 0 and 1
+	UFUNCTION(BlueprintPure, Category = "Health")
+	float GetHealthPercentage();
+
+	float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -27,6 +27,13 @@ public:
 
 private:
 
+	// Sets default values for this pawn's properties
+	ATank();
 
+	UPROPERTY(EditAnywhere)
+	int32 StartingHealth = 100.f;
+
+	UPROPERTY(EditAnywhere)
+	int32 CurrentHealth = StartingHealth;
 
 };
