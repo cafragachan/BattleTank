@@ -23,7 +23,7 @@ private:
 	void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-	float RadarRadius = 10000;
+	float RadarRadius = 1000;
 
 	UTankAimingComponent* AimingComp = nullptr;
 	

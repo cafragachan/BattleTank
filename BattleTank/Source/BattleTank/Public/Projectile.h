@@ -9,6 +9,7 @@
 
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class URadialForceComponent;
 
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
@@ -29,6 +30,15 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* LaunchBlast;
 
+	UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent* ImpactBlast;
+
+	UPROPERTY(VisibleAnywhere)
+	URadialForceComponent* ExplosionForce = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	float DestroyDelay = 2.f;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -36,8 +46,14 @@ public:
 	void LaunchProjectile(float LaunchSpeed_);
 
 	
+	
 private:
 
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
+
+	void OnTimer();
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
 };
