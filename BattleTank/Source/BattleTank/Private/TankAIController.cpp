@@ -4,11 +4,14 @@
 #include "Engine/World.h"
 #include "TankPlayerController.h"
 #include "Public/TankAimingComponent.h"
+#include "Tank.h"
+#include "Mortar.h"
 
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+
 	AimingComp = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 
 }
@@ -25,6 +28,34 @@ void ATankAIController::Tick(float DeltaTime)
 		AimingComp->AimAt(PlayerTank->GetActorLocation());
 		if(AimingComp->GetFiringState() == EFiringState::Locked) AimingComp->Fire();
 	}
+}
+
+void ATankAIController::SetPawn(APawn * Pawn_)
+{
+	Super::SetPawn(Pawn_);
+
+	if (Pawn_)
+	{
+		auto PossessedTank = Cast<ATank>(Pawn_);
+		auto PossessedMortar = Cast<AMortar>(Pawn_);
+
+		if (ensure(PossessedTank)) 
+		{
+			PossessedTank->DeathManager.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
+		}
+		if (ensure(PossessedMortar))
+		{
+			PossessedMortar->DeathManager.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
+		}
+
+	}
+}
+
+void ATankAIController::OnTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AI tank got destroyed"));
+	if (!GetPawn()) return;
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
 
 

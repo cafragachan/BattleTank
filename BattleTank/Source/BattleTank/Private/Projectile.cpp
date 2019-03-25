@@ -62,7 +62,7 @@ void AProjectile::LaunchProjectile(float LaunchSpeed_)
 
 void AProjectile::OnTimer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("destroying"));
+	//UE_LOG(LogTemp, Warning, TEXT("destroying"));
 	Destroy();
 }
 

@@ -24,6 +24,11 @@ private:
 
 		virtual void Tick(float DeltaTime) override;
 
+		virtual void SetPawn(APawn* Pawn_) override;
+
+		UFUNCTION()
+		void OnTankDeath();
+
 		UTankAimingComponent* AimingComp = nullptr;
 
 public:

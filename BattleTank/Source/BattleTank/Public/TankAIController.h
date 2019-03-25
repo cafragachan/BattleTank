@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "TankAIController.generated.h"
-
 /**
  * 
  */
@@ -20,7 +19,13 @@ class BATTLETANK_API ATankAIController : public AAIController
 private:
 
 	void BeginPlay() override;
+
 	void Tick(float DeltaTime) override;
+
+	virtual void SetPawn(APawn* Pawn_) override;
+
+	UFUNCTION()
+	void OnTankDeath();
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float RadarRadius = 1000;

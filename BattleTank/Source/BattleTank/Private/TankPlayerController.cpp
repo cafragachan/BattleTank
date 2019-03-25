@@ -7,6 +7,7 @@
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
 #include "Public/TankAimingComponent.h"
+#include "Tank.h"
 
 
 void ATankPlayerController::BeginPlay()
@@ -22,6 +23,27 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AimTowardsCrosshair();
+}
+
+void ATankPlayerController::SetPawn(APawn * Pawn_)
+{
+	Super::SetPawn(Pawn_);
+
+	if (Pawn_)
+	{
+		auto PossessedTank = Cast<ATank>(Pawn_);
+
+		if (!ensure(PossessedTank)) return;
+
+		PossessedTank->DeathManager.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
+	}
+}
+
+void ATankPlayerController::OnTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("My tank got destroyed"));
+	StartSpectatingOnly();
+
 }
 
 
@@ -60,7 +82,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitPos_) const
 			Hit, 
 			CameraPos,
 			EndPos, 
-			ECollisionChannel::ECC_Visibility,
+			ECollisionChannel::ECC_Camera,
 			Param
 			
 		);

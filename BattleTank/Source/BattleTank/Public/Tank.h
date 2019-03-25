@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathHandler);
 
 UCLASS(Blueprintable)
 class BATTLETANK_API ATank : public APawn
@@ -23,6 +24,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	FDeathHandler DeathManager;
 
 
 private:

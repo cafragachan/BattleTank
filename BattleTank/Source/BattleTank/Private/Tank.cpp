@@ -25,11 +25,12 @@ float ATank::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AControl
 		// If the damage depletes our health set our lifespan to zero - which will destroy the actor  
 		if (CurrentHealth <= 0.f)
 		{
-			SetLifeSpan(0.001f);
+			DeathManager.Broadcast();
+			//SetLifeSpan(0.001f);
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Actual Damage = %i, Damage to Apply = %i"), ActualDamage, DamageToApply);
+	//UE_LOG(LogTemp, Warning, TEXT("Actual Damage = %i, Damage to Apply = %i"), ActualDamage, DamageToApply);
 
 	return ActualDamage;
 }
