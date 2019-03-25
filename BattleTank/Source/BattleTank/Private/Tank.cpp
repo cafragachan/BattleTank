@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Public/Tank.h"
-
+#include "Components/StaticMeshComponent.h"
+#include "TankTrack.h"
+#include "SpringWheel.h"
 
 // Sets default values
 ATank::ATank()
@@ -9,6 +11,9 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	SprungWheel = CreateDefaultSubobject<ASpringWheel>(FName("Suspension"));
+	/*auto Track = FindComponentByClass<UTankTrack>();
+	SprungWheel->AttachToComponent(Track, FAttachmentTransformRules::KeepRelativeTransform);*/
 }
 
 

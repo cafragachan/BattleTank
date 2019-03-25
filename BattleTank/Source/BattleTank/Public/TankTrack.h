@@ -6,6 +6,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankTrack.generated.h"
 
+
+
 /**
  * TankTrack is used to set maximum driving force and to move the tank.
  */
@@ -17,6 +19,8 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 private:
 
 	float CurrentThrottle = 0;
+
+
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

@@ -4,10 +4,12 @@
 #include "Components/PrimitiveComponent.h"
 #include "Engine.h"
 
+
 UTankTrack::UTankTrack() 
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
+	
 }
 
 void UTankTrack::BeginPlay()

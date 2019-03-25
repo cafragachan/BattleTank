@@ -39,11 +39,11 @@ void ATankAIController::SetPawn(APawn * Pawn_)
 		auto PossessedTank = Cast<ATank>(Pawn_);
 		auto PossessedMortar = Cast<AMortar>(Pawn_);
 
-		if (ensure(PossessedTank)) 
+		if (PossessedTank) 
 		{
 			PossessedTank->DeathManager.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
 		}
-		if (ensure(PossessedMortar))
+		if (PossessedMortar)
 		{
 			PossessedMortar->DeathManager.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
 		}

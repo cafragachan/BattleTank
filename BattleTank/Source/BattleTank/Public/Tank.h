@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+class ASpringWheel;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathHandler);
 
 UCLASS(Blueprintable)
@@ -38,4 +40,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	int32 CurrentHealth = StartingHealth;
 
+	UPROPERTY(VisibleAnywhere)
+		ASpringWheel* SprungWheel = nullptr;
 };
