@@ -10,12 +10,8 @@ ASpringWheel::ASpringWheel()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-
 	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Physics Constraint"));
 	SetRootComponent(PhysicsConstraint);
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mesh"));
-	Mesh->SetupAttachment(PhysicsConstraint);
 
 	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
 	Wheel->SetupAttachment(PhysicsConstraint);
@@ -30,6 +26,9 @@ void ASpringWheel::BeginPlay()
 	if (GetAttachParentActor())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NOT NULL"));
+
+		auto TankPrimitive = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
+		PhysicsConstraint->SetConstrainedComponents(TankPrimitive, NAME_None, Wheel, NAME_None);
 	}
 	else
 	{

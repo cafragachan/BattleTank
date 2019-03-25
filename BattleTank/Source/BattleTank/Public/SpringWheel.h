@@ -25,8 +25,6 @@ public:
 
 private:
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* Mesh = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Wheel = nullptr;
