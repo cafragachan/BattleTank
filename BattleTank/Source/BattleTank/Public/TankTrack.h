@@ -36,6 +36,6 @@ public:
 	void DriveTrack();
 
 	UPROPERTY(EditDefaultsOnly)
-	float TrackMaxDrivingForce = 100000;
+	float TrackMaxDrivingForce = 20000000.f;
 	
 };
