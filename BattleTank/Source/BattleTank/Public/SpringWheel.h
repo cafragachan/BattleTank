@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "SpringWheel.generated.h"
 
+
+class USphereComponent;
+
 UCLASS()
 class BATTLETANK_API ASpringWheel : public AActor
 {
@@ -15,21 +18,23 @@ public:
 	// Sets default values for this actor's properties
 	ASpringWheel();
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	void AddDrivingForce(float ForceMagnitude);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 private:
 
 	UPROPERTY(VisibleAnywhere)
-	class USphereComponent* Axle = nullptr;
+	USphereComponent* Axle = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
-	class USphereComponent* Wheel = nullptr;
+	USphereComponent* Wheel = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
 	class UPhysicsConstraintComponent* SpringConstraint = nullptr;
@@ -37,4 +42,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UPhysicsConstraintComponent* AxleConstraint = nullptr;
 	
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	void ResetForce();
+
+	void ApplyForce();
+
+	float CurrentForceMagnitude = 0;
 };

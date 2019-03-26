@@ -2,6 +2,7 @@
 
 #include "SpawnPoint.h"
 #include "Engine.h"
+#include "SpringWheel.h"
 
 // Sets default values for this component's properties
 USpawnPoint::USpawnPoint()
@@ -13,27 +14,18 @@ USpawnPoint::USpawnPoint()
 	// ...
 }
 
-
 // Called when the game starts
 void USpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
 	auto SpringWheel = GetWorld()->SpawnActorDeferred<AActor>(Suspension, GetComponentTransform());
-	UE_LOG(LogTemp, Warning, TEXT("spawn test"));
+
 	if (!SpringWheel) return;
+
 	SpringWheel->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	WheelAttached = Cast<ASpringWheel>(SpringWheel);
+
 	UGameplayStatics::FinishSpawningActor(SpringWheel, GetComponentTransform());
 	
 }
-
-
-// Called every frame
-void USpawnPoint::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-

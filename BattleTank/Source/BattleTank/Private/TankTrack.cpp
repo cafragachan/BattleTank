@@ -3,9 +3,12 @@
 #include "TankTrack.h"
 #include "Components/PrimitiveComponent.h"
 #include "Engine.h"
+#include "SpringWheel.h"
+#include "SpawnPoint.h"
 
 
-UTankTrack::UTankTrack() 
+
+UTankTrack::UTankTrack()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
@@ -15,9 +18,7 @@ UTankTrack::UTankTrack()
 void UTankTrack::BeginPlay()
 {
 	Super::BeginPlay();
-
-	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
-
+	
 }
 
 void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -26,33 +27,39 @@ void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 
 }
 
-void UTankTrack::ApplySidewaysForce()
-{
-	auto SideCorrectionMagnitude = FVector::DotProduct(GetComponentVelocity(), GetRightVector());
-	auto CorrectionAcceleration = -SideCorrectionMagnitude * GetRightVector() / GetWorld()->GetDeltaSeconds();
-	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-	auto CorrectionForce = TankRoot->GetMass() * CorrectionAcceleration / 2;
-
-	TankRoot->AddForce(CorrectionForce);
-}
 
 void UTankTrack::SetThrottle(float Throttle_) 
 {
-	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle_, -1, 1);
+	Throttle = FMath::Clamp<float>(Throttle_, -1, 1);
+	DriveTrack();
+}
+
+TArray<ASpringWheel*> UTankTrack::GetWheels() const
+{
+	TArray<ASpringWheel*> Wheels;
+	TArray<USceneComponent*> SpawnSceneComponent;
+	GetChildrenComponents(false, SpawnSceneComponent);
+
+
+	for (USceneComponent* SpawnPoint : SpawnSceneComponent)
+	{
+		auto SP = Cast<USpawnPoint>(SpawnPoint);
+		if (!SP) continue;
+		Wheels.Add(SP->WheelAttached);
+	}
+
+	return Wheels;
 }
 
 void UTankTrack::DriveTrack()
 {
-	auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
-	auto ForceLocation = GetComponentLocation();
-	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
+	auto Wheels = GetWheels();
 
-	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
+	for (ASpringWheel* Wheel : Wheels) {
+
+
+		Wheel->AddDrivingForce(Throttle * TrackMaxDrivingForce / Wheels.Num());
+	}
 }
 
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	DriveTrack();
-	ApplySidewaysForce();
-	CurrentThrottle = 0;
-}
+
