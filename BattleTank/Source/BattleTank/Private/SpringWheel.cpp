@@ -2,7 +2,7 @@
 
 #include "SpringWheel.h"
 #include "Classes/PhysicsEngine/PhysicsConstraintComponent.h"
-#include "Classes/Components/StaticMeshComponent.h"
+#include "Classes/Components/SphereComponent.h"
 
 // Sets default values
 ASpringWheel::ASpringWheel()
@@ -10,11 +10,17 @@ ASpringWheel::ASpringWheel()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Physics Constraint"));
-	SetRootComponent(PhysicsConstraint);
+	SpringConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Spring Constraint"));
+	SetRootComponent(SpringConstraint);
 
-	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
-	Wheel->SetupAttachment(PhysicsConstraint);
+	Axle = CreateDefaultSubobject<USphereComponent>(FName("Axle"));
+	Axle->SetupAttachment(SpringConstraint);
+
+	Wheel = CreateDefaultSubobject<USphereComponent>(FName("Wheel"));
+	Wheel->SetupAttachment(Axle);
+
+	AxleConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("Axle Constraint"));
+	AxleConstraint->SetupAttachment(Axle);
 
 }
 
@@ -28,7 +34,8 @@ void ASpringWheel::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("NOT NULL"));
 
 		auto TankPrimitive = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
-		PhysicsConstraint->SetConstrainedComponents(TankPrimitive, NAME_None, Wheel, NAME_None);
+		SpringConstraint->SetConstrainedComponents(TankPrimitive, NAME_None, Axle, NAME_None);
+		AxleConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);
 	}
 	else
 	{

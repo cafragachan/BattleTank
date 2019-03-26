@@ -25,13 +25,16 @@ public:
 
 private:
 
+	UPROPERTY(VisibleAnywhere)
+	class USphereComponent* Axle = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* Wheel = nullptr;
+	class USphereComponent* Wheel = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
-	class UPhysicsConstraintComponent* PhysicsConstraint = nullptr;
+	class UPhysicsConstraintComponent* SpringConstraint = nullptr;
 
-	
+	UPROPERTY(VisibleAnywhere)
+	UPhysicsConstraintComponent* AxleConstraint = nullptr;
 	
 };
